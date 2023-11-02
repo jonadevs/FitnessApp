@@ -22,22 +22,14 @@ namespace FitnessApp.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<SetDto>> GetSets(int workoutId)
         {
-            try
+            var workout = _workoutsDataStore.Workouts.FirstOrDefault(workout => workout.Id == workoutId);
+            if (workout == null)
             {
-                var workout = _workoutsDataStore.Workouts.FirstOrDefault(workout => workout.Id == workoutId);
-                if (workout == null)
-                {
-                    _logger.LogInformation($"Workout with id {workoutId} wasn't found when accessing sets.");
-                    return NotFound();
-                }
+                _logger.LogInformation($"Workout with id {workoutId} wasn't found when accessing sets.");
+                return NotFound();
+            }
 
-                return Ok(workout.Sets);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogCritical($"Exception while getting sets for a workout with id {workoutId}", exception);
-                return StatusCode(500, "A problem happened while handling your request.");
-            }
+            return Ok(workout.Sets);
         }
 
         [HttpGet("{setId}", Name = "GetSet")]
