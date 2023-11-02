@@ -7,16 +7,23 @@ namespace FitnessApp.API.Controllers
     [Route("api/workouts")]
     public class WorkoutsController : ControllerBase
     {
+        private readonly WorkoutsDataStore _workoutsDataStore;
+
+        public WorkoutsController(WorkoutsDataStore workoutsDataStore)
+        {
+            _workoutsDataStore = workoutsDataStore;
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<WorkoutDto>> GetWorkouts()
         {
-            return Ok(WorkoutsDataStore.Current.Workouts);
+            return Ok(_workoutsDataStore.Workouts);
         }
 
         [HttpGet("{id}")]
         public ActionResult<WorkoutDto> GetWorkout(int id)
         {
-            var cityToReturn = WorkoutsDataStore.Current.Workouts.FirstOrDefault(workout => workout.Id == id);
+            var cityToReturn = _workoutsDataStore.Workouts.FirstOrDefault(workout => workout.Id == id);
 
             if(cityToReturn == null)
             {

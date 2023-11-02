@@ -6,7 +6,7 @@ namespace FitnessApp.API
     {
         public List<WorkoutDto> Workouts { get; set; }
 
-        public static WorkoutsDataStore Current { get; } = new WorkoutsDataStore();
+        // public static WorkoutsDataStore Current { get; } = new WorkoutsDataStore();
 
         public WorkoutsDataStore()
         {
