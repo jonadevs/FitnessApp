@@ -1,6 +1,8 @@
 using FitnessApp.API;
+using FitnessApp.API.DbContexts;
 using FitnessApp.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -34,6 +36,12 @@ builder.Services.AddTransient<IMailService, CloudMailService>();
 #endif
 
 builder.Services.AddSingleton<WorkoutsDataStore>();
+
+builder.Services.AddDbContext<FitnessAppContext>(
+    dbContextOptions => dbContextOptions.UseSqlite(
+        builder.Configuration["ConnectionStrings:FitnessAppDBConnectionString"]
+    )
+);
 
 var app = builder.Build();
 
