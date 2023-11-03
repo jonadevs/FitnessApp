@@ -475,3 +475,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Custom: exclude SQLite database
+*.db
+*.db-shm
+*.db-wal

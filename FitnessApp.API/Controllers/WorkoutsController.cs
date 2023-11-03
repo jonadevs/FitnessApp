@@ -1,4 +1,6 @@
-﻿using FitnessApp.API.Models;
+﻿using AutoMapper;
+using FitnessApp.API.Models;
+using FitnessApp.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessApp.API.Controllers
@@ -7,30 +9,41 @@ namespace FitnessApp.API.Controllers
     [Route("api/workouts")]
     public class WorkoutsController : ControllerBase
     {
-        private readonly WorkoutsDataStore _workoutsDataStore;
+        private readonly IFitnessAppRepository _fitnessAppRepository;
+        private readonly IMapper _mapper;
 
-        public WorkoutsController(WorkoutsDataStore workoutsDataStore)
+        public WorkoutsController(IFitnessAppRepository fitnessAppRepository, IMapper mapper)
         {
-            _workoutsDataStore = workoutsDataStore;
+            _fitnessAppRepository = fitnessAppRepository ??
+                throw new ArgumentNullException(nameof(fitnessAppRepository));
+            _mapper = mapper ??
+                throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<WorkoutDto>> GetWorkouts()
+        public async Task<ActionResult<IEnumerable<WorkoutWithoutSetsDto>>> GetWorkouts()
         {
-            return Ok(_workoutsDataStore.Workouts);
+            var workoutEntities = await _fitnessAppRepository.GetWorkoutsAsync();
+
+            return Ok(_mapper.Map<IEnumerable<WorkoutWithoutSetsDto>>(workoutEntities));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<WorkoutDto> GetWorkout(int id)
+        public async Task<IActionResult> GetWorkout(int id, bool includeSets = false)
         {
-            var cityToReturn = _workoutsDataStore.Workouts.FirstOrDefault(workout => workout.Id == id);
+            var workout = await _fitnessAppRepository.GetWorkoutAsync(id, includeSets);
 
-            if(cityToReturn == null)
+            if (workout == null)
             {
                 return NotFound();
             }
 
-            return Ok(cityToReturn);
+            if (includeSets)
+            {
+                return Ok(_mapper.Map<WorkoutDto>(workout));
+            }
+
+            return Ok(_mapper.Map<WorkoutWithoutSetsDto>(workout));
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using FitnessApp.API.Models;
+﻿using AutoMapper;
+using FitnessApp.API.Entities;
+using FitnessApp.API.Models;
 using FitnessApp.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,113 +12,123 @@ namespace FitnessApp.API.Controllers
     {
         private readonly ILogger<SetsController> _logger;
         private readonly IMailService _mailService;
-        private readonly WorkoutsDataStore _workoutsDataStore;
+        private readonly IFitnessAppRepository _fitnessAppRepository;
+        private readonly IMapper _mapper;
 
-        public SetsController(ILogger<SetsController> logger, IMailService mailService, WorkoutsDataStore workoutsDataStore)
+        public SetsController(ILogger<SetsController> logger, IMailService mailService, IFitnessAppRepository fitnessAppRepository, IMapper mapper)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
-            _workoutsDataStore = workoutsDataStore;
+            _logger = logger ?? 
+                throw new ArgumentNullException(nameof(logger));
+            _mailService = mailService ?? 
+                throw new ArgumentNullException(nameof(mailService));
+            _fitnessAppRepository = fitnessAppRepository ??
+                throw new ArgumentNullException(nameof(fitnessAppRepository));
+            _mapper = mapper ??
+                throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<SetDto>> GetSets(int workoutId)
+        public async Task<ActionResult<IEnumerable<SetDto>>> GetSets(int workoutId)
         {
-            var workout = _workoutsDataStore.Workouts.FirstOrDefault(workout => workout.Id == workoutId);
-            if (workout == null)
+            if(!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
             {
                 _logger.LogInformation($"Workout with id {workoutId} wasn't found when accessing sets.");
                 return NotFound();
             }
 
-            return Ok(workout.Sets);
+            var setsForWorkout = await _fitnessAppRepository.GetSetsForWorkoutAsync(workoutId);
+
+            return Ok(_mapper.Map<IEnumerable<SetDto>>(setsForWorkout));
         }
 
         [HttpGet("{setId}", Name = "GetSet")]
-        public ActionResult<SetDto> GetSet(int workoutId, int setId)
+        public async Task<ActionResult<SetDto>> GetSet(int workoutId, int setId)
         {
-            var workout = _workoutsDataStore.Workouts.FirstOrDefault(workout => workout.Id == workoutId);
-            if (workout == null)
+            if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
+            {
+                _logger.LogInformation($"Workout with id {workoutId} wasn't found when accessing sets.");
+                return NotFound();
+            }
+
+            var setForWorkout = await _fitnessAppRepository.GetSetForWorkoutAsync(workoutId, setId);
+
+            if(setForWorkout == null)
             {
                 return NotFound();
             }
 
-            var set = workout.Sets.FirstOrDefault(set => set.Id == setId);
-            if (set == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(set);
+            return Ok(_mapper.Map<SetDto>(setForWorkout));
         }
 
         [HttpPost]
-        public ActionResult<SetDto> CreateSet(int workoutId, SetForCreationDto set)
+        public async Task<ActionResult<SetDto>> CreateSet(int workoutId, SetForCreationDto set)
         {
-            var workout = _workoutsDataStore.Workouts.FirstOrDefault(workout => workout.Id == workoutId);
-            if (workout == null)
+            if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
             {
+                _logger.LogInformation($"Workout with id {workoutId} wasn't found when creating a set.");
                 return NotFound();
             }
 
-            var maxSetId = _workoutsDataStore.Workouts.SelectMany(workout => workout.Sets).Max(set => set.Id);
+            var finalSet = _mapper.Map<Set>(set);
 
-            var finalSet = new SetDto()
-            {
-                Id = ++maxSetId,
-                Name = set.Name,
-                Intensity = set.Intensity
-            };
+            await _fitnessAppRepository.AddSetForWorkoutAsync(workoutId, finalSet);
 
-            workout.Sets.Add(finalSet);
+            await _fitnessAppRepository.SaveChangesAsync();
+
+            var createdSetToReturn = _mapper.Map<SetDto>(finalSet);
 
             return CreatedAtRoute("GetSet",
                 new
                 {
                     workoutId = workoutId,
-                    setId = finalSet.Id
-                }, finalSet
+                    setId = createdSetToReturn.Id
+                }, 
+                createdSetToReturn
             );
         }
 
         [HttpPut("{setId}")]
-        public ActionResult UpdateSet(int workoutId, int setId, SetForUpdateDto set)
+        public async Task<ActionResult> UpdateSet(int workoutId, int setId, SetForUpdateDto set)
         {
-            var workout = _workoutsDataStore.Workouts.FirstOrDefault(workout => workout.Id == workoutId);
-            if (workout == null)
+            if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
+            {
+                _logger.LogInformation($"Workout with id {workoutId} wasn't found when updating a set.");
+                return NotFound();
+            }
+
+            var setEntity = await _fitnessAppRepository.GetSetForWorkoutAsync(workoutId, setId);
+            if (setEntity == null)
             {
                 return NotFound();
             }
 
-            var setFromStore = workout.Sets.FirstOrDefault(set => set.Id == setId);
-            if (setFromStore == null)
-            {
-                return NotFound();
-            }
+            _mapper.Map(set, setEntity);
 
-            setFromStore.Name = set.Name;
-            setFromStore.Intensity = set.Intensity;
+            await _fitnessAppRepository.SaveChangesAsync();
 
             return NoContent();
         }
 
         [HttpDelete("{setId}")]
-        public ActionResult DeleteSet(int workoutId, int setId)
+        public async Task<ActionResult> DeleteSet(int workoutId, int setId)
         {
-            var workout = _workoutsDataStore.Workouts.FirstOrDefault(workout => workout.Id == workoutId);
-            if (workout == null)
+            if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
+            {
+                _logger.LogInformation($"Workout with id {workoutId} wasn't found when updating a set.");
+                return NotFound();
+            }
+
+            var setEntity = await _fitnessAppRepository.GetSetForWorkoutAsync(workoutId, setId);
+            if (setEntity == null)
             {
                 return NotFound();
             }
 
-            var set = workout.Sets.FirstOrDefault(set => set.Id == setId);
-            if (set == null)
-            {
-                return NotFound();
-            }
+            _fitnessAppRepository.DeleteSet(setEntity);
+            await _fitnessAppRepository.SaveChangesAsync();
 
-            workout.Sets.Remove(set);
-            _mailService.Send("Set deleted.", $"Set {set.Name} with id {set.Id} was successfully deleted.");
+            _mailService.Send("Set deleted.", $"Set {setEntity.Name} with id {setEntity.Id} was successfully deleted.");
+
             return NoContent();
         }
     }
