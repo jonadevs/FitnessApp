@@ -6,6 +6,8 @@ namespace FitnessApp.API.Services
     {
         Task<IEnumerable<Workout>> GetWorkoutsAsync();
 
+        Task<(IEnumerable<Workout>, PaginationMetadata)> GetWorkoutsAsync(string? name, string? searchQuery, int pageNumber, int pageSize);
+
         Task<Workout?> GetWorkoutAsync(int workoutId, bool includeSets);
 
         Task<bool> WorkoutExistsAsync(int workoutId);
