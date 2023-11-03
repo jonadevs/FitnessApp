@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Text.Json;
+using AutoMapper;
 using FitnessApp.API.Models;
 using FitnessApp.API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ namespace FitnessApp.API.Controllers
     {
         private readonly IFitnessAppRepository _fitnessAppRepository;
         private readonly IMapper _mapper;
+        const int maxWorkoutsPageSize = 20;
 
         public WorkoutsController(IFitnessAppRepository fitnessAppRepository, IMapper mapper)
         {
@@ -21,9 +23,16 @@ namespace FitnessApp.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WorkoutWithoutSetsDto>>> GetWorkouts()
+        public async Task<ActionResult<IEnumerable<WorkoutWithoutSetsDto>>> GetWorkouts(string? name, string? searchQuery, int pageNumber = 1, int pageSize = 10)
         {
-            var workoutEntities = await _fitnessAppRepository.GetWorkoutsAsync();
+            if(pageSize > maxWorkoutsPageSize)
+            {
+                pageSize = maxWorkoutsPageSize;
+            }
+
+            var (workoutEntities, paginationMetadata) = await _fitnessAppRepository.GetWorkoutsAsync(name, searchQuery, pageNumber, pageSize);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
 
             return Ok(_mapper.Map<IEnumerable<WorkoutWithoutSetsDto>>(workoutEntities));
         }
