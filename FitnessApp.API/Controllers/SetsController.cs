@@ -2,12 +2,14 @@
 using FitnessApp.API.Entities;
 using FitnessApp.API.Models;
 using FitnessApp.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessApp.API.Controllers
 {
-    [Route("api/workouts/{workoutId}/sets")]
     [ApiController]
+    [Authorize(Policy = "MustBeFromBerlin")]
+    [Route("api/workouts/{workoutId}/sets")]
     public class SetsController : ControllerBase
     {
         private readonly ILogger<SetsController> _logger;

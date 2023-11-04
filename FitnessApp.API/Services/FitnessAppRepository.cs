@@ -94,5 +94,15 @@ namespace FitnessApp.API.Services
         {
             return await _context.SaveChangesAsync() >= 0;
         }
+
+        public async Task<bool> WorkoutNameExistsAsync(string name)
+        {
+            return await _context.Workouts.AnyAsync(workout => workout.Name.Equals(name));
+        }
+
+        public void CreateWorkout(Workout newWorkout)
+        {
+            _context.Workouts.Add(newWorkout);
+        }
     }
 }
