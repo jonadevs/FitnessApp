@@ -8,6 +8,8 @@ namespace FitnessApp.API.Profiles
         {
             CreateMap<Entities.Workout, Models.WorkoutWithoutSetsDto>();
             CreateMap<Entities.Workout, Models.WorkoutDto>();
+
+            CreateMap<Models.WorkoutForCreationDto, Entities.Workout>();
         }
     }
 }

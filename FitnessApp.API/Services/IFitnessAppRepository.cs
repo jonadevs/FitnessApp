@@ -11,6 +11,10 @@ namespace FitnessApp.API.Services
         Task<Workout?> GetWorkoutAsync(int workoutId, bool includeSets);
 
         Task<bool> WorkoutExistsAsync(int workoutId);
+        
+        Task<bool> WorkoutNameExistsAsync(string name);
+
+        void CreateWorkout(Workout newWorkout);
 
         Task<IEnumerable<Set>> GetSetsForWorkoutAsync(int workoutId);
 
