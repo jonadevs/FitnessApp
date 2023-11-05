@@ -11,7 +11,9 @@ namespace FitnessApp.API.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("api/workouts")]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/workouts")]
     public class WorkoutsController : ControllerBase
     {
         private readonly IFitnessAppRepository _fitnessAppRepository;
@@ -24,7 +26,16 @@ namespace FitnessApp.API.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        /// <summary>
+        /// Get a list of workouts
+        /// </summary>
+        /// <param name="name">Filter by name</param>
+        /// <param name="searchQuery">Search by name</param>
+        /// <param name="pageNumber">Page number to return</param>
+        /// <param name="pageSize">Page size to return</param>
+        /// <returns>Returns a list of workouts</returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<WorkoutWithoutSetsDto>>> GetWorkouts(string? name, string? searchQuery, int pageNumber = 1, int pageSize = 10)
         {
             if (pageSize > maxWorkoutsPageSize)
@@ -39,7 +50,18 @@ namespace FitnessApp.API.Controllers
             return Ok(_mapper.Map<IEnumerable<WorkoutWithoutSetsDto>>(workoutEntities));
         }
 
+        /// <summary>
+        /// Get a workout by id
+        /// </summary>
+        /// <param name="id">The id of the workout to get</param>
+        /// <param name="includeSets">Whether or not to include the sets</param>
+        /// <returns>An IActionResult</returns>
+        /// <response code ="200">Returns the requested workout</response>
         [HttpGet("{id}", Name = "GetWorkout")]
+        [ProducesResponseType(typeof(WorkoutDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetWorkout(int id, bool includeSets = false)
         {
             var workout = await _fitnessAppRepository.GetWorkoutAsync(id, includeSets);
@@ -63,7 +85,16 @@ namespace FitnessApp.API.Controllers
             return Ok(_mapper.Map<WorkoutWithoutSetsDto>(workout));
         }
 
+        /// <summary>
+        /// Create a workout
+        /// </summary>
+        /// <param name="workoutForCreationDto">The required data to create a workout</param>
+        /// <returns>Returns the newly created workout</returns>
+        /// <response code="201">Returns the newly created workout</response>
+        /// <response code="409">Returns a conflict in case a workout with this name already exists</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<WorkoutWithoutSetsDto>> CreateWorkout(WorkoutForCreationDto workoutForCreationDto)
         {
             if (await _fitnessAppRepository.WorkoutNameExistsAsync(workoutForCreationDto.Name))

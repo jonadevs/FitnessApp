@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FitnessApp.API</name>
+    </assembly>
+    <members>
+        <member name="M:FitnessApp.API.Controllers.WorkoutsController.GetWorkouts(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Get a list of workouts
+            </summary>
+            <param name="name">Filter by name</param>
+            <param name="searchQuery">Search by name</param>
+            <param name="pageNumber">Page number to return</param>
+            <param name="pageSize">Page size to return</param>
+            <returns>Returns a list of workouts</returns>
+        </member>
+        <member name="M:FitnessApp.API.Controllers.WorkoutsController.GetWorkout(System.Int32,System.Boolean)">
+            <summary>
+            Get a workout by id
+            </summary>
+            <param name="id">The id of the workout to get</param>
+            <param name="includeSets">Whether or not to include the sets</param>
+            <returns>An IActionResult</returns>
+            <response code ="200">Returns the requested workout</response>
+        </member>
+        <member name="M:FitnessApp.API.Controllers.WorkoutsController.CreateWorkout(FitnessApp.API.Models.WorkoutForCreationDto)">
+            <summary>
+            Create a workout
+            </summary>
+            <param name="workoutForCreationDto">The required data to create a workout</param>
+            <returns>Returns the newly created workout</returns>
+            <response code="201">Returns the newly created workout</response>
+            <response code="409">Returns a conflict in case a workout with this name already exists</response>
+        </member>
+        <member name="T:FitnessApp.API.Migrations.FitnessAppDBInitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.FitnessAppDBInitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.FitnessAppDBInitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.FitnessAppDBInitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:FitnessApp.API.Migrations.FitnessAppDBAddSetIntensity">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.FitnessAppDBAddSetIntensity.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.FitnessAppDBAddSetIntensity.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.FitnessAppDBAddSetIntensity.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:FitnessApp.API.Migrations.DataSeed">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.DataSeed.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.DataSeed.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.DataSeed.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:FitnessApp.API.Migrations.DataSeedFix">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.DataSeedFix.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.DataSeedFix.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.DataSeedFix.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:FitnessApp.API.Models.WorkoutWithoutSetsDto">
+            <summary>
+            A DTO for a workout without sets
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutWithoutSetsDto.Id">
+            <summary>
+            The id of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutWithoutSetsDto.Name">
+            <summary>
+            The name of the workout
+            </summary>
+        </member>
+    </members>
+</doc>

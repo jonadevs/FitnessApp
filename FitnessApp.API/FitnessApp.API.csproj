@@ -12,11 +12,14 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>FitnessApp.API.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageReference Include="microsoft.entityframeworkcore" Version="7.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13">

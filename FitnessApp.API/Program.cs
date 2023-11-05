@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using FitnessApp.API;
 using FitnessApp.API.DbContexts;
@@ -5,6 +6,7 @@ using FitnessApp.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -28,7 +30,29 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(swaggerGenOptions =>
+{
+    var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    swaggerGenOptions.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlCommentsFile));
+
+    swaggerGenOptions.AddSecurityDefinition("FitnessAppApiBearerAuth", new OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Input a valid token to access this API"
+    });
+
+    swaggerGenOptions.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference() {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="FitnessAppApiBearerAuth" }
+            }, new List<string>() }
+    });
+});
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 #if DEBUG
@@ -41,7 +65,7 @@ builder.Services.AddSingleton<WorkoutsDataStore>();
 
 // policy test
 builder.Services.AddDbContext<FitnessAppContext>(
-    dbContextOptions => dbContextOptions.UseSqlite(
+    dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlite(
         builder.Configuration["ConnectionStrings:FitnessAppDBConnectionString"]
     )
 );
@@ -50,9 +74,9 @@ builder.Services.AddScoped<IFitnessAppRepository, FitnessAppRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
+builder.Services.AddAuthentication("Bearer").AddJwtBearer(jwtBearerOptions =>
 {
-    options.TokenValidationParameters = new()
+    jwtBearerOptions.TokenValidationParameters = new()
     {
         ValidateIssuer = true,
         ValidateAudience = true,
@@ -63,12 +87,20 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
     };
 });
 
-builder.Services.AddAuthorization(options => {
-    options.AddPolicy("MustBeFromBerlin", policy =>
+builder.Services.AddAuthorization(authorizationOptions =>
+{
+    authorizationOptions.AddPolicy("MustBeFromBerlin", authorizationPolicyBuilder =>
     {
-        policy.RequireAuthenticatedUser();
-        policy.RequireClaim("city", "Berlin");
+        authorizationPolicyBuilder.RequireAuthenticatedUser();
+        authorizationPolicyBuilder.RequireClaim("city", "Berlin");
     });
+});
+
+builder.Services.AddApiVersioning(apiVersioningOptions =>
+{
+    apiVersioningOptions.AssumeDefaultVersionWhenUnspecified = true;
+    apiVersioningOptions.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    apiVersioningOptions.ReportApiVersions = true;
 });
 
 var app = builder.Build();
