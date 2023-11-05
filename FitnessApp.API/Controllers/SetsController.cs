@@ -9,7 +9,8 @@ namespace FitnessApp.API.Controllers
 {
     [ApiController]
     [Authorize(Policy = "MustBeFromBerlin")]
-    [Route("api/workouts/{workoutId}/sets")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/workouts/{workoutId}/sets")]
     public class SetsController : ControllerBase
     {
         private readonly ILogger<SetsController> _logger;
