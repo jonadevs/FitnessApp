@@ -31,52 +31,16 @@
             <response code="201">Returns the newly created workout</response>
             <response code="409">Returns a conflict in case a workout with this name already exists</response>
         </member>
-        <member name="T:FitnessApp.API.Migrations.FitnessAppDBInitialMigration">
+        <member name="T:FitnessApp.API.Migrations.FitnessAppApiCleanDatabase">
             <inheritdoc />
         </member>
-        <member name="M:FitnessApp.API.Migrations.FitnessAppDBInitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:FitnessApp.API.Migrations.FitnessAppApiCleanDatabase.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:FitnessApp.API.Migrations.FitnessAppDBInitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:FitnessApp.API.Migrations.FitnessAppApiCleanDatabase.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:FitnessApp.API.Migrations.FitnessAppDBInitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:FitnessApp.API.Migrations.FitnessAppDBAddSetIntensity">
-            <inheritdoc />
-        </member>
-        <member name="M:FitnessApp.API.Migrations.FitnessAppDBAddSetIntensity.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:FitnessApp.API.Migrations.FitnessAppDBAddSetIntensity.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:FitnessApp.API.Migrations.FitnessAppDBAddSetIntensity.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:FitnessApp.API.Migrations.DataSeed">
-            <inheritdoc />
-        </member>
-        <member name="M:FitnessApp.API.Migrations.DataSeed.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:FitnessApp.API.Migrations.DataSeed.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:FitnessApp.API.Migrations.DataSeed.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:FitnessApp.API.Migrations.DataSeedFix">
-            <inheritdoc />
-        </member>
-        <member name="M:FitnessApp.API.Migrations.DataSeedFix.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:FitnessApp.API.Migrations.DataSeedFix.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:FitnessApp.API.Migrations.DataSeedFix.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:FitnessApp.API.Migrations.FitnessAppApiCleanDatabase.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:FitnessApp.API.Models.WorkoutWithoutSetsDto">
