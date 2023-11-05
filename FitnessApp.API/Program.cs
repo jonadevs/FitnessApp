@@ -61,8 +61,6 @@ builder.Services.AddTransient<IMailService, LocalMailService>();
 builder.Services.AddTransient<IMailService, CloudMailService>();
 #endif
 
-builder.Services.AddSingleton<WorkoutsDataStore>();
-
 // policy test
 builder.Services.AddDbContext<FitnessAppContext>(
     dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlite(

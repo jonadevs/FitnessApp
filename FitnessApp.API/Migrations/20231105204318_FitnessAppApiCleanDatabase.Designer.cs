@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessApp.API.Migrations
 {
     [DbContext(typeof(FitnessAppContext))]
-    [Migration("20231102215548_DataSeedFix")]
-    partial class DataSeedFix
+    [Migration("20231105204318_FitnessAppApiCleanDatabase")]
+    partial class FitnessAppApiCleanDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
