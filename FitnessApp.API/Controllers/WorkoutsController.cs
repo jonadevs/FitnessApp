@@ -2,6 +2,7 @@
 using System.Text.Json;
 using AutoMapper;
 using FitnessApp.API.Entities;
+using FitnessApp.API.Filters;
 using FitnessApp.API.Models;
 using FitnessApp.API.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -36,6 +37,7 @@ namespace FitnessApp.API.Controllers
         /// <returns>Returns a list of workouts</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [TypeFilter(typeof(ResultFilter<IEnumerable<WorkoutWithoutSetsDto>>))]
         public async Task<ActionResult<IEnumerable<WorkoutWithoutSetsDto>>> GetWorkouts(string? name, string? searchQuery, int pageNumber = 1, int pageSize = 10)
         {
             if (pageSize > maxWorkoutsPageSize)
@@ -43,18 +45,17 @@ namespace FitnessApp.API.Controllers
                 pageSize = maxWorkoutsPageSize;
             }
 
-            var (workoutEntities, paginationMetadata) = await _fitnessAppRepository.GetWorkoutsAsync(name, searchQuery, pageNumber, pageSize);
+            var (workouts, paginationMetadata) = await _fitnessAppRepository.GetWorkoutsAsync(name, searchQuery, pageNumber, pageSize);
 
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
 
-            return Ok(_mapper.Map<IEnumerable<WorkoutWithoutSetsDto>>(workoutEntities));
+            return Ok(workouts);
         }
 
         /// <summary>
         /// Get a workout by id
         /// </summary>
         /// <param name="id">The id of the workout to get</param>
-        /// <param name="includeSets">Whether or not to include the sets</param>
         /// <returns>An IActionResult</returns>
         /// <response code ="200">Returns the requested workout</response>
         [HttpGet("{id}", Name = "GetWorkout")]
@@ -62,9 +63,10 @@ namespace FitnessApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetWorkout(int id, bool includeSets = false)
+        [TypeFilter(typeof(ResultFilter<WorkoutDto>))]
+        public async Task<IActionResult> GetWorkout(int id)
         {
-            var workout = await _fitnessAppRepository.GetWorkoutAsync(id, includeSets);
+            var workout = await _fitnessAppRepository.GetWorkoutAsync(id);
 
             if (workout == null)
             {
@@ -77,12 +79,7 @@ namespace FitnessApp.API.Controllers
                 return Forbid();
             }
 
-            if (includeSets)
-            {
-                return Ok(_mapper.Map<WorkoutDto>(workout));
-            }
-
-            return Ok(_mapper.Map<WorkoutWithoutSetsDto>(workout));
+            return Ok(workout);
         }
 
         /// <summary>
@@ -95,6 +92,7 @@ namespace FitnessApp.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [TypeFilter(typeof(ResultFilter<WorkoutWithoutSetsDto>))]
         public async Task<ActionResult<WorkoutWithoutSetsDto>> CreateWorkout(WorkoutForCreationDto workoutForCreationDto)
         {
             if (await _fitnessAppRepository.WorkoutNameExistsAsync(workoutForCreationDto.Name))
@@ -108,14 +106,12 @@ namespace FitnessApp.API.Controllers
 
             await _fitnessAppRepository.SaveChangesAsync();
 
-            var createdWorkoutToReturn = _mapper.Map<WorkoutWithoutSetsDto>(newWorkout);
-
             return CreatedAtRoute("GetWorkout",
                 new
                 {
-                    id = createdWorkoutToReturn.Id
+                    id = newWorkout.Id
                 },
-                createdWorkoutToReturn);
+                newWorkout);
         }
 
         private static bool UserIsOfLegalAge(ClaimsPrincipal user)

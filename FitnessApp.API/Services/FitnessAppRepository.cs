@@ -51,7 +51,8 @@ namespace FitnessApp.API.Services
         {
             if (includeSets)
             {
-                return await _context.Workouts.Include(workout => workout.Sets)
+                return await _context.Workouts
+                    .Include(workout => workout.Sets)
                     .Where(workout => workout.Id == workoutId).FirstOrDefaultAsync();
             }
 

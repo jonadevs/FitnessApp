@@ -14,12 +14,11 @@
             <param name="pageSize">Page size to return</param>
             <returns>Returns a list of workouts</returns>
         </member>
-        <member name="M:FitnessApp.API.Controllers.WorkoutsController.GetWorkout(System.Int32,System.Boolean)">
+        <member name="M:FitnessApp.API.Controllers.WorkoutsController.GetWorkout(System.Int32)">
             <summary>
             Get a workout by id
             </summary>
             <param name="id">The id of the workout to get</param>
-            <param name="includeSets">Whether or not to include the sets</param>
             <returns>An IActionResult</returns>
             <response code ="200">Returns the requested workout</response>
         </member>

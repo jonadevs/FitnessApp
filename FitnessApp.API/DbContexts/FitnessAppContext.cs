@@ -29,36 +29,31 @@ namespace FitnessApp.API.DbContexts
                 });
 
             modelBuilder.Entity<Set>().HasData(
-                new Set("Triceps pulldown")
+                new Set("Triceps pulldown", "Easy")
                 {
                     Id = 1,
-                    WorkoutId = 1,
-                    Intensity = "Easy"
+                    WorkoutId = 1
                 },
-                new Set("Shoulder press")
+                new Set("Shoulder press", "Hard")
                 {
                     Id = 2,
-                    WorkoutId = 1,
-                    Intensity = "Hard"
+                    WorkoutId = 1
                 },
-                new Set("Bicep curl")
+                new Set("Bicep curl", "Easy")
                 {
                     Id = 3,
-                    WorkoutId = 2,
-                    Intensity = "Easy"
+                    WorkoutId = 2
                 },
-                new Set("Chest fly")
+                new Set("Chest fly", "Medium")
                 {
                     Id = 4,
-                    WorkoutId = 2,
-                    Intensity = "Medium"
+                    WorkoutId = 2
 
                 },
-                new Set("Hamstring curl")
+                new Set("Hamstring curl", "Easy")
                 {
                     Id = 5,
-                    WorkoutId = 3,
-                    Intensity = "Easy"
+                    WorkoutId = 3
                 });
 
             base.OnModelCreating(modelBuilder);
