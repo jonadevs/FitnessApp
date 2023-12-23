@@ -12,7 +12,7 @@ using Serilog;
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
-    .WriteTo.File("logs/fitnessapp.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("Logs/FitnessApp.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
