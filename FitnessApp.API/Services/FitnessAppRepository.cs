@@ -15,7 +15,7 @@ namespace FitnessApp.API.Services
 
         public async Task<IEnumerable<Workout>> GetWorkoutsAsync()
         {
-            return await _context.Workouts.OrderBy(workout => workout.Name).ToListAsync();
+            return await _context.Workouts.OrderBy(workout => workout.Date).ToListAsync();
         }
 
         public async Task<(IEnumerable<Workout>, PaginationMetadata)> GetWorkoutsAsync(string? name, string? searchQuery, int pageNumber, int pageSize)
@@ -39,7 +39,7 @@ namespace FitnessApp.API.Services
             var paginationMetadata = new PaginationMetadata(totalItemCount, pageSize, pageNumber);
 
             var collectionToReturn = await collection
-                .OrderBy(workout => workout.Name)
+                .OrderBy(workout => workout.Date)
                 .Skip(pageSize * (pageNumber - 1))
                 .Take(pageSize)
                 .ToListAsync();
