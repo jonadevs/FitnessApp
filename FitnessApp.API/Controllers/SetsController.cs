@@ -9,8 +9,7 @@ namespace FitnessApp.API.Controllers
 {
     [ApiController]
     [Authorize(Policy = "MustBeFromBerlin")]
-    [ApiVersion("2.0")]
-    [Route("api/v{version:apiVersion}/workouts/{workoutId}/sets")]
+    [Route("api/workouts/{workoutId}/sets")]
     public class SetsController : ControllerBase
     {
         private readonly ILogger<SetsController> _logger;
@@ -35,7 +34,7 @@ namespace FitnessApp.API.Controllers
         {
             if(!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
             {
-                _logger.LogInformation($"Workout with id {workoutId} wasn't found when accessing sets.");
+                _logger.LogInformation("Workout with id {workoutId} wasn't found when accessing sets.", workoutId);
                 return NotFound();
             }
 
@@ -49,7 +48,7 @@ namespace FitnessApp.API.Controllers
         {
             if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
             {
-                _logger.LogInformation($"Workout with id {workoutId} wasn't found when accessing sets.");
+                _logger.LogInformation("Workout with id {workoutId} wasn't found when accessing sets.", workoutId);
                 return NotFound();
             }
 
@@ -68,7 +67,7 @@ namespace FitnessApp.API.Controllers
         {
             if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
             {
-                _logger.LogInformation($"Workout with id {workoutId} wasn't found when creating a set.");
+                _logger.LogInformation("Workout with id {workoutId} wasn't found when creating a set.", workoutId);
                 return NotFound();
             }
 
@@ -83,7 +82,7 @@ namespace FitnessApp.API.Controllers
             return CreatedAtRoute("GetSet",
                 new
                 {
-                    workoutId = workoutId,
+                    workoutId,
                     setId = createdSetToReturn.Id
                 }, 
                 createdSetToReturn
@@ -95,7 +94,7 @@ namespace FitnessApp.API.Controllers
         {
             if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
             {
-                _logger.LogInformation($"Workout with id {workoutId} wasn't found when updating a set.");
+                _logger.LogInformation("Workout with id {workoutId} wasn't found when updating a set.", workoutId);
                 return NotFound();
             }
 
@@ -117,7 +116,7 @@ namespace FitnessApp.API.Controllers
         {
             if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
             {
-                _logger.LogInformation($"Workout with id {workoutId} wasn't found when updating a set.");
+                _logger.LogInformation("Workout with id {workoutId} wasn't found when updating a set.", workoutId);
                 return NotFound();
             }
 

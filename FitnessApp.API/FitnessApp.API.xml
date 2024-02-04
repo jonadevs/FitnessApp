@@ -43,6 +43,68 @@
         <member name="M:FitnessApp.API.Migrations.FitnessAppApiCleanDatabase.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:FitnessApp.API.Migrations.AddWorkoutTypeDateAndLength">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.AddWorkoutTypeDateAndLength.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.AddWorkoutTypeDateAndLength.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.AddWorkoutTypeDateAndLength.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutDto.Id">
+            <summary>
+            The id of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutDto.Name">
+            <summary>
+            The name of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutDto.Type">
+            <summary>
+            The type of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutDto.Date">
+            <summary>
+            The date of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutDto.Length">
+            <summary>
+            The length of the workout in minutes
+            </summary>
+        </member>
+        <member name="T:FitnessApp.API.Models.WorkoutForCreationDto">
+            <summary>
+            A DTO to create a workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutForCreationDto.Name">
+            <summary>
+            The name of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutForCreationDto.Type">
+            <summary>
+            The type of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutForCreationDto.Date">
+            <summary>
+            The date of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutForCreationDto.Length">
+            <summary>
+            The length of the workout in minutes
+            </summary>
+        </member>
         <member name="T:FitnessApp.API.Models.WorkoutWithoutSetsDto">
             <summary>
             A DTO for a workout without sets
@@ -56,6 +118,21 @@
         <member name="P:FitnessApp.API.Models.WorkoutWithoutSetsDto.Name">
             <summary>
             The name of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutWithoutSetsDto.Type">
+            <summary>
+            The type of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutWithoutSetsDto.Date">
+            <summary>
+            The date of the workout
+            </summary>
+        </member>
+        <member name="P:FitnessApp.API.Models.WorkoutWithoutSetsDto.Length">
+            <summary>
+            The length of the workout in minutes
             </summary>
         </member>
     </members>

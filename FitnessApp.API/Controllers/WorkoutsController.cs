@@ -12,9 +12,7 @@ namespace FitnessApp.API.Controllers
 {
     [ApiController]
     [Authorize]
-    [ApiVersion("1.0")]
-    [ApiVersion("2.0")]
-    [Route("api/v{version:apiVersion}/workouts")]
+    [Route("api/workouts")]
     public class WorkoutsController : ControllerBase
     {
         private readonly IFitnessAppRepository _fitnessAppRepository;
