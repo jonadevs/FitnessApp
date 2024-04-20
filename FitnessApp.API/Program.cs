@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Text;
-using FitnessApp.API;
 using FitnessApp.API.DbContexts;
 using FitnessApp.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
@@ -69,12 +68,6 @@ builder.Services.AddAuthorization(authorizationOptions =>
         authorizationPolicyBuilder.RequireAuthenticatedUser();
         authorizationPolicyBuilder.RequireClaim("city", "Berlin");
     });
-});
-builder.Services.AddApiVersioning(apiVersioningOptions =>
-{
-    apiVersioningOptions.AssumeDefaultVersionWhenUnspecified = true;
-    apiVersioningOptions.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
-    apiVersioningOptions.ReportApiVersions = true;
 });
 
 var app = builder.Build();
