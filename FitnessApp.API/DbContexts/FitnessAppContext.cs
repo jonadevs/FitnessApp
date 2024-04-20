@@ -14,11 +14,46 @@ public class FitnessAppContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Workout>().HasData(
-            new Workout("Training 14/09", WorkoutType.WeightTraining, new DateTime(2023, 9, 14, 17, 0, 0), 90) { Id = 1 },
-            new Workout("Training 17/09", WorkoutType.WeightTraining, new DateTime(2023, 9, 17, 18, 0, 0), 120) { Id = 2 },
-            new Workout("Training 20/09", WorkoutType.WeightTraining, new DateTime(2023, 9, 20, 17, 0, 0), 120) { Id = 3 },
-            new Workout("Laufen 28/12", WorkoutType.Running, new DateTime(2023, 12, 28, 14, 0, 0), 31) { Id = 4 },
-            new Workout("Laufen 30/12", WorkoutType.Running, new DateTime(2023, 12, 30, 12, 0, 0), 33) { Id = 5 });
+            new Workout
+            {
+                Id = 1,
+                Name = "Training 14/09",
+                Type = WorkoutType.WeightTraining,
+                Date = new DateTime(2023, 9, 14, 17, 0, 0),
+                Length = 90
+            },
+            new Workout
+            {
+                Id = 2,
+                Name = "Training 17/09",
+                Type = WorkoutType.WeightTraining,
+                Date = new DateTime(2023, 9, 17, 18, 0, 0),
+                Length = 120
+            },
+            new Workout
+            {
+                Id = 3,
+                Name = "Training 20/09",
+                Type = WorkoutType.WeightTraining,
+                Date = new DateTime(2023, 9, 20, 17, 0, 0),
+                Length = 120
+            },
+            new Workout
+            {
+                Id = 4,
+                Name = "Laufen 28/12",
+                Type = WorkoutType.Running,
+                Date = new DateTime(2023, 12, 28, 14, 0, 0),
+                Length = 31
+            },
+            new Workout
+            {
+                Id = 5,
+                Name = "Laufen 30/12",
+                Type = WorkoutType.Running,
+                Date = new DateTime(2023, 12, 30, 12, 0, 0),
+                Length = 33
+            });
 
         modelBuilder.Entity<Set>().HasData(
             new Set

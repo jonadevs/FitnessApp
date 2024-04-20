@@ -7,6 +7,6 @@ public class SetProfile : Profile
     public SetProfile()
     {
         CreateMap<Entities.Set, Models.SetDTO>();
-        CreateMap<Models.SetForUpdateDto, Entities.Set>();
+        CreateMap<Models.UpdateSetDTO, Entities.Set>();
     }
 }

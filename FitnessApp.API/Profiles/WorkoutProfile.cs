@@ -9,6 +9,6 @@ public class WorkoutProfile : Profile
         CreateMap<Entities.Workout, Models.WorkoutWithoutSetsDto>();
         CreateMap<Entities.Workout, Models.WorkoutDto>();
 
-        CreateMap<Models.WorkoutForCreationDto, Entities.Workout>();
+        CreateMap<Models.CreateWorkoutDTO, Entities.Workout>();
     }
 }
