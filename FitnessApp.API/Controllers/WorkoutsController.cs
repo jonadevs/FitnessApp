@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-using System.Text.Json;
-using AutoMapper;
+﻿using System.Text.Json;
 using FitnessApp.API.Entities;
 using FitnessApp.API.Filters;
 using FitnessApp.API.Models;
@@ -16,13 +14,13 @@ namespace FitnessApp.API.Controllers;
 public class WorkoutsController : ControllerBase
 {
     private readonly IFitnessAppRepository _fitnessAppRepository;
-    private readonly IMapper _mapper;
+    private readonly IWorkoutService _workoutService;
     const int maxPageSize = 20;
 
-    public WorkoutsController(IFitnessAppRepository fitnessAppRepository, IMapper mapper)
+    public WorkoutsController(IFitnessAppRepository fitnessAppRepository, IWorkoutService workoutService)
     {
         _fitnessAppRepository = fitnessAppRepository;
-        _mapper = mapper;
+        _workoutService = workoutService;
     }
 
     /// <summary>
@@ -39,8 +37,7 @@ public class WorkoutsController : ControllerBase
     public async Task<ActionResult<IEnumerable<WorkoutWithoutSetsDto>>> GetWorkouts(string? name, string? searchQuery, int pageNumber = 1, int pageSize = 10)
     {
         pageSize = pageSize > maxPageSize ? maxPageSize : pageSize;
-
-        var (workouts, paginationMetadata) = await _fitnessAppRepository.GetWorkoutsAsync(name, searchQuery, pageNumber, pageSize);
+        var (workouts, paginationMetadata) = await _workoutService.GetWorkoutsAsync(name, searchQuery, pageNumber, pageSize);
 
         Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
         return Ok(workouts);
@@ -60,17 +57,10 @@ public class WorkoutsController : ControllerBase
     [TypeFilter(typeof(ResultFilter<WorkoutDto>))]
     public async Task<IActionResult> GetWorkout(int id)
     {
-        var workout = await _fitnessAppRepository.GetWorkoutAsync(id);
-
+        var workout = await _workoutService.GetWorkoutByIdWithSetsAsync(id);
         if (workout == null)
         {
             return NotFound();
-        }
-
-        // claims test
-        if (workout.Name.ToLower().Contains("nsfw") && !UserIsOfLegalAge(User))
-        {
-            return Forbid();
         }
 
         return Ok(workout);
@@ -79,7 +69,7 @@ public class WorkoutsController : ControllerBase
     /// <summary>
     /// Create a workout
     /// </summary>
-    /// <param name="workoutForCreationDto">The required data to create a workout</param>
+    /// <param name="createWorkoutDto">The required data to create a workout</param>
     /// <returns>Returns the newly created workout</returns>
     /// <response code="201">Returns the newly created workout</response>
     /// <response code="409">Returns a conflict in case a workout with this name already exists</response>
@@ -87,43 +77,28 @@ public class WorkoutsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [TypeFilter(typeof(ResultFilter<WorkoutWithoutSetsDto>))]
-    public async Task<ActionResult<WorkoutWithoutSetsDto>> CreateWorkout(WorkoutForCreationDto workoutForCreationDto)
+    public async Task<ActionResult<WorkoutWithoutSetsDto>> CreateWorkout(CreateWorkoutDTO createWorkoutDto)
     {
-        if (await _fitnessAppRepository.WorkoutNameExistsAsync(workoutForCreationDto.Name))
+        if (await _workoutService.WorkoutNameExistsAsync(createWorkoutDto.Name))
         {
-            return Conflict($"Workout with name {workoutForCreationDto.Name} already exists.");
+            return Conflict($"Workout with name {createWorkoutDto.Name} already exists.");
         }
 
-        var newWorkout = _mapper.Map<Workout>(workoutForCreationDto);
-
-        _fitnessAppRepository.CreateWorkout(newWorkout);
-
+        var workout = new Workout
+        {
+            Name = createWorkoutDto.Name,
+            Type = createWorkoutDto.Type,
+            Date = createWorkoutDto.Date,
+            Length = createWorkoutDto.Length
+        };
+        _workoutService.CreateWorkout(workout);
         await _fitnessAppRepository.SaveChangesAsync();
 
         return CreatedAtRoute("GetWorkout",
             new
             {
-                id = newWorkout.Id
+                id = workout.Id
             },
-            newWorkout);
-    }
-
-    private static bool UserIsOfLegalAge(ClaimsPrincipal user)
-    {
-        const int legalAge = 18;
-
-        var dateOfBirthString = user.Claims.FirstOrDefault(claim => claim.Type == "date_of_birth")?.Value;
-        if (DateOnly.TryParse(dateOfBirthString, out var dateOfBirth))
-        {
-            var today = DateOnly.FromDateTime(DateTime.Now);
-            var userIsOfLegalAge = dateOfBirth.AddYears(legalAge) <= today;
-
-            if (userIsOfLegalAge)
-            {
-                return true;
-            }
-        }
-
-        return false;
+            workout);
     }
 }

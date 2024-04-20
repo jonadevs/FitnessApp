@@ -22,11 +22,11 @@
             <returns>An IActionResult</returns>
             <response code ="200">Returns the requested workout</response>
         </member>
-        <member name="M:FitnessApp.API.Controllers.WorkoutsController.CreateWorkout(FitnessApp.API.Models.WorkoutForCreationDto)">
+        <member name="M:FitnessApp.API.Controllers.WorkoutsController.CreateWorkout(FitnessApp.API.Models.CreateWorkoutDTO)">
             <summary>
             Create a workout
             </summary>
-            <param name="workoutForCreationDto">The required data to create a workout</param>
+            <param name="createWorkoutDto">The required data to create a workout</param>
             <returns>Returns the newly created workout</returns>
             <response code="201">Returns the newly created workout</response>
             <response code="409">Returns a conflict in case a workout with this name already exists</response>

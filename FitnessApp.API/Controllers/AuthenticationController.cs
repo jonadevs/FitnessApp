@@ -32,11 +32,11 @@ public class AuthenticationController : ControllerBase
 
         var claimsForToken = new List<Claim>
         {
-            new Claim("sub", user.UserId.ToString()),
-            new Claim("given_name", user.FirstName),
-            new Claim("family_name", user.LastName),
-            new Claim("date_of_birth", user.DateOfBirth.ToString() ?? string.Empty),
-            new Claim("city", user.City)
+            new("sub", user.UserId.ToString()),
+            new("given_name", user.FirstName),
+            new("family_name", user.LastName),
+            new("date_of_birth", user.DateOfBirth.ToString() ?? string.Empty),
+            new("city", user.City)
         };
         var jwtSecurityToken = new JwtSecurityToken(
             _configuration["Authentication:Issuer"],

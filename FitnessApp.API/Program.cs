@@ -48,6 +48,9 @@ builder.Services.AddDbContext<FitnessAppContext>(
 );
 
 builder.Services.AddScoped<IFitnessAppRepository, FitnessAppRepository>();
+builder.Services.AddScoped<IWorkoutService, WorkoutService>();
+builder.Services.AddScoped<ISetService, SetService>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(jwtBearerOptions =>
 {

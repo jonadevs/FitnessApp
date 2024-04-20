@@ -2,7 +2,7 @@
 
 namespace FitnessApp.API.Models;
 
-public class SetForUpdateDto
+public class UpdateSetDTO
 {
     [Required(ErrorMessage = "You should provide a name value.")]
     [MaxLength(50)]

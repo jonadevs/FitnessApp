@@ -11,7 +11,7 @@ public class Workout
 
     [Required]
     [MaxLength(50)]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     [Required]
     public WorkoutType Type { get; set; }
@@ -20,14 +20,5 @@ public class Workout
 
     public int Length { get; set; }
 
-    public ICollection<Set> Sets { get; set; }
-        = new List<Set>();
-
-    public Workout(string name, WorkoutType type, DateTime date, int length)
-    {
-        Name = name;
-        Type = type;
-        Date = date;
-        Length = length;
-    }
+    public ICollection<Set> Sets { get; set; } = new List<Set>();
 }
