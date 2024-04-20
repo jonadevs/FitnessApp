@@ -17,12 +17,12 @@ public class WorkoutsController : ControllerBase
 {
     private readonly IFitnessAppRepository _fitnessAppRepository;
     private readonly IMapper _mapper;
-    const int maxWorkoutsPageSize = 20;
+    const int maxPageSize = 20;
 
     public WorkoutsController(IFitnessAppRepository fitnessAppRepository, IMapper mapper)
     {
-        _fitnessAppRepository = fitnessAppRepository ?? throw new ArgumentNullException(nameof(fitnessAppRepository));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _fitnessAppRepository = fitnessAppRepository;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -38,15 +38,11 @@ public class WorkoutsController : ControllerBase
     [TypeFilter(typeof(ResultFilter<IEnumerable<WorkoutWithoutSetsDto>>))]
     public async Task<ActionResult<IEnumerable<WorkoutWithoutSetsDto>>> GetWorkouts(string? name, string? searchQuery, int pageNumber = 1, int pageSize = 10)
     {
-        if (pageSize > maxWorkoutsPageSize)
-        {
-            pageSize = maxWorkoutsPageSize;
-        }
+        pageSize = pageSize > maxPageSize ? maxPageSize : pageSize;
 
         var (workouts, paginationMetadata) = await _fitnessAppRepository.GetWorkoutsAsync(name, searchQuery, pageNumber, pageSize);
 
-        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
-
+        Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
         return Ok(workouts);
     }
 
