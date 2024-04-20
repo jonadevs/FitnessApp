@@ -18,30 +18,18 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
-
-// Add services to the container.
-
-//builder.Services.AddControllers(options =>
-//{
-//    options.ReturnHttpNotAcceptable = true;
-//}).AddXmlDataContractSerializerFormatters();
-
 builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swaggerGenOptions =>
 {
     var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     swaggerGenOptions.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlCommentsFile));
-
     swaggerGenOptions.AddSecurityDefinition("FitnessAppApiBearerAuth", new OpenApiSecurityScheme()
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         Description = "Input a valid token to access this API"
     });
-
     swaggerGenOptions.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -54,14 +42,6 @@ builder.Services.AddSwaggerGen(swaggerGenOptions =>
     });
 });
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
-
-#if DEBUG
-builder.Services.AddTransient<IMailService, LocalMailService>();
-#else
-builder.Services.AddTransient<IMailService, CloudMailService>();
-#endif
-
-// policy test
 builder.Services.AddDbContext<FitnessAppContext>(
     dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlite(
         builder.Configuration["ConnectionStrings:FitnessAppDBConnectionString"]
@@ -69,9 +49,7 @@ builder.Services.AddDbContext<FitnessAppContext>(
 );
 
 builder.Services.AddScoped<IFitnessAppRepository, FitnessAppRepository>();
-
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(jwtBearerOptions =>
 {
     jwtBearerOptions.TokenValidationParameters = new()
@@ -84,7 +62,6 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(jwtBearerOptions =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
     };
 });
-
 builder.Services.AddAuthorization(authorizationOptions =>
 {
     authorizationOptions.AddPolicy("MustBeFromBerlin", authorizationPolicyBuilder =>
@@ -93,7 +70,6 @@ builder.Services.AddAuthorization(authorizationOptions =>
         authorizationPolicyBuilder.RequireClaim("city", "Berlin");
     });
 });
-
 builder.Services.AddApiVersioning(apiVersioningOptions =>
 {
     apiVersioningOptions.AssumeDefaultVersionWhenUnspecified = true;
@@ -103,7 +79,6 @@ builder.Services.AddApiVersioning(apiVersioningOptions =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -111,13 +86,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
