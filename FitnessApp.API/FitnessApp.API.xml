@@ -55,5 +55,17 @@
         <member name="M:FitnessApp.API.Migrations.AddWorkoutTypeDateAndLength.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:FitnessApp.API.Migrations.Auto_Intensity_nullable">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.Auto_Intensity_nullable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.Auto_Intensity_nullable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FitnessApp.API.Migrations.Auto_Intensity_nullable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

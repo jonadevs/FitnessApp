@@ -11,20 +11,13 @@ public class Set
 
     [Required]
     [MaxLength(50)]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
-    [Required]
     [MaxLength(200)]
-    public string Intensity { get; set; }
+    public string? Intensity { get; set; }
 
     [ForeignKey("WorkoutId")]
     public Workout? Workout { get; set; }
 
     public int WorkoutId { get; set; }
-
-    public Set(string name, string intensity)
-    {
-        Name = name;
-        Intensity = intensity;
-    }
 }

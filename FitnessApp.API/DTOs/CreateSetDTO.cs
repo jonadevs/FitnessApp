@@ -2,7 +2,7 @@
 
 namespace FitnessApp.API.Models;
 
-public class SetForCreationDto
+public class CreateSetDTO
 {
     [Required(ErrorMessage = "You should provide a name value.")]
     [MaxLength(50)]

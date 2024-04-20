@@ -20,5 +20,5 @@ public class WorkoutDto
         }
     }
 
-    public ICollection<SetDto> Sets { get; set; } = new List<SetDto>();
+    public ICollection<SetDTO> Sets { get; set; } = new List<SetDTO>();
 }
