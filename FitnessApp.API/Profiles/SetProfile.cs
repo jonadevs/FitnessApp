@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 
-namespace FitnessApp.API.Profiles
-{
-    public class SetProfile : Profile
-    {
-        public SetProfile()
-        {
-            CreateMap<Entities.Set, Models.SetDto>();
+namespace FitnessApp.API.Profiles;
 
-            CreateMap<Models.SetForCreationDto, Entities.Set>();
-            CreateMap<Models.SetForUpdateDto, Entities.Set>();
-        }
+public class SetProfile : Profile
+{
+    public SetProfile()
+    {
+        CreateMap<Entities.Set, Models.SetDto>();
+
+        CreateMap<Models.SetForCreationDto, Entities.Set>();
+        CreateMap<Models.SetForUpdateDto, Entities.Set>();
     }
 }

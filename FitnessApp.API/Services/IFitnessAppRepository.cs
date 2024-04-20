@@ -1,29 +1,29 @@
 ﻿using FitnessApp.API.Entities;
+using FitnessApp.API.Models;
 
-namespace FitnessApp.API.Services
+namespace FitnessApp.API.Services;
+
+public interface IFitnessAppRepository
 {
-    public interface IFitnessAppRepository
-    {
-        Task<IEnumerable<Workout>> GetWorkoutsAsync();
+    Task<IEnumerable<Workout>> GetWorkoutsAsync();
 
-        Task<(IEnumerable<Workout>, PaginationMetadata)> GetWorkoutsAsync(string? name, string? searchQuery, int pageNumber, int pageSize);
+    Task<(IEnumerable<Workout>, PaginationMetadata)> GetWorkoutsAsync(string? name, string? searchQuery, int pageNumber, int pageSize);
 
-        Task<Workout?> GetWorkoutAsync(int workoutId, bool includeSets = true);
+    Task<Workout?> GetWorkoutAsync(int workoutId, bool includeSets = true);
 
-        Task<bool> WorkoutExistsAsync(int workoutId);
-        
-        Task<bool> WorkoutNameExistsAsync(string name);
+    Task<bool> WorkoutExistsAsync(int workoutId);
 
-        void CreateWorkout(Workout newWorkout);
+    Task<bool> WorkoutNameExistsAsync(string name);
 
-        Task<IEnumerable<Set>> GetSetsForWorkoutAsync(int workoutId);
+    void CreateWorkout(Workout newWorkout);
 
-        Task<Set?> GetSetForWorkoutAsync(int workoutId, int setId);
+    Task<IEnumerable<Set>> GetSetsForWorkoutAsync(int workoutId);
 
-        Task AddSetForWorkoutAsync(int workoutId, Set set);
+    Task<Set?> GetSetForWorkoutAsync(int workoutId, int setId);
 
-        void DeleteSet(Set set);
+    Task AddSetForWorkoutAsync(int workoutId, Set set);
 
-        Task<bool> SaveChangesAsync();
-    }
+    void DeleteSet(Set set);
+
+    Task<bool> SaveChangesAsync();
 }
