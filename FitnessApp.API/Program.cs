@@ -15,7 +15,6 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Host.UseSerilog();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -64,14 +63,12 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(jwtBearerOptions =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
     };
 });
-builder.Services.AddAuthorization(authorizationOptions =>
-{
-    authorizationOptions.AddPolicy("MustBeFromBerlin", authorizationPolicyBuilder =>
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("MustBeFromBerlin", authorizationPolicyBuilder =>
     {
         authorizationPolicyBuilder.RequireAuthenticatedUser();
         authorizationPolicyBuilder.RequireClaim("city", "Berlin");
     });
-});
 
 var app = builder.Build();
 
@@ -85,9 +82,6 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.MapControllers();
 
 app.Run();

@@ -30,7 +30,7 @@ public class SetsController : ControllerBase
     {
         if (!await _workoutService.WorkoutExistsAsync(workoutId))
         {
-            _logger.LogInformation("Workout with id {workoutId} wasn't found.", workoutId);
+            _logger.LogInformation("Workout with id {WorkoutId} wasn't found.", workoutId);
             return NotFound();
         }
 
@@ -43,7 +43,7 @@ public class SetsController : ControllerBase
     {
         if (!await _workoutService.WorkoutExistsAsync(workoutId))
         {
-            _logger.LogInformation("Workout with id {workoutId} wasn't found.", workoutId);
+            _logger.LogInformation("Workout with id {WorkoutId} wasn't found.", workoutId);
             return NotFound();
         }
 
@@ -61,7 +61,7 @@ public class SetsController : ControllerBase
     {
         if (!await _workoutService.WorkoutExistsAsync(workoutId))
         {
-            _logger.LogInformation("Workout with id {workoutId} wasn't found.", workoutId);
+            _logger.LogInformation("Workout with id {WorkoutId} wasn't found.", workoutId);
             return NotFound();
         }
 
@@ -89,14 +89,14 @@ public class SetsController : ControllerBase
     {
         if (!await _workoutService.WorkoutExistsAsync(workoutId))
         {
-            _logger.LogInformation("Workout with id {workoutId} wasn't found.", workoutId);
+            _logger.LogInformation("Workout with id {WorkoutId} wasn't found.", workoutId);
             return NotFound();
         }
 
         var set = await _setService.GetSetForWorkoutAsync(workoutId, setId);
         if (set == null)
         {
-            _logger.LogInformation("Set with id {setId} wasn't found.", setId);
+            _logger.LogInformation("Set with id {SetId} wasn't found.", setId);
             return NotFound();
         }
 
@@ -112,14 +112,14 @@ public class SetsController : ControllerBase
     {
         if (!await _workoutService.WorkoutExistsAsync(workoutId))
         {
-            _logger.LogInformation("Workout with id {workoutId} wasn't found.", workoutId);
+            _logger.LogInformation("Workout with id {WorkoutId} wasn't found.", workoutId);
             return NotFound();
         }
 
         var set = await _setService.GetSetForWorkoutAsync(workoutId, setId);
         if (set == null)
         {
-            _logger.LogInformation("Set with id {setId} wasn't found.", setId);
+            _logger.LogInformation("Set with id {SetId} wasn't found.", setId);
             return NotFound();
         }
 
