@@ -60,6 +60,6 @@ public class AuthenticationController : ControllerBase
             return null;
         }
 
-        return new FitnessAppUser(1, userName ?? "", "Max", "Mustermann", new DateOnly(2010, 12, 31), "Berlin");
+        return new FitnessAppUser(1, userName, "Max", "Mustermann", new DateOnly(2010, 12, 31), "Berlin");
     }
 }

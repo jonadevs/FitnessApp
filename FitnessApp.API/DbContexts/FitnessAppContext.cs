@@ -19,7 +19,7 @@ public class FitnessAppContext : DbContext
                 Id = 1,
                 Name = "Training 14/09",
                 Type = WorkoutType.WeightTraining,
-                Date = new DateTime(2023, 9, 14, 17, 0, 0),
+                Date = new DateTime(2023, 9, 14, 17, 0, 0, DateTimeKind.Utc),
                 Length = 90
             },
             new Workout
@@ -27,7 +27,7 @@ public class FitnessAppContext : DbContext
                 Id = 2,
                 Name = "Training 17/09",
                 Type = WorkoutType.WeightTraining,
-                Date = new DateTime(2023, 9, 17, 18, 0, 0),
+                Date = new DateTime(2023, 9, 17, 18, 0, 0, DateTimeKind.Utc),
                 Length = 120
             },
             new Workout
@@ -35,7 +35,7 @@ public class FitnessAppContext : DbContext
                 Id = 3,
                 Name = "Training 20/09",
                 Type = WorkoutType.WeightTraining,
-                Date = new DateTime(2023, 9, 20, 17, 0, 0),
+                Date = new DateTime(2023, 9, 20, 17, 0, 0, DateTimeKind.Utc),
                 Length = 120
             },
             new Workout
@@ -43,7 +43,7 @@ public class FitnessAppContext : DbContext
                 Id = 4,
                 Name = "Laufen 28/12",
                 Type = WorkoutType.Running,
-                Date = new DateTime(2023, 12, 28, 14, 0, 0),
+                Date = new DateTime(2023, 12, 28, 14, 0, 0, DateTimeKind.Utc),
                 Length = 31
             },
             new Workout
@@ -51,7 +51,7 @@ public class FitnessAppContext : DbContext
                 Id = 5,
                 Name = "Laufen 30/12",
                 Type = WorkoutType.Running,
-                Date = new DateTime(2023, 12, 30, 12, 0, 0),
+                Date = new DateTime(2023, 12, 30, 12, 0, 0, DateTimeKind.Utc),
                 Length = 33
             });
 
@@ -94,10 +94,4 @@ public class FitnessAppContext : DbContext
 
         base.OnModelCreating(modelBuilder);
     }
-
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    optionsBuilder.UseSqlite("connectionstring");
-    //    base.OnConfiguring(optionsBuilder);
-    //}
 }
