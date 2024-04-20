@@ -22,7 +22,7 @@ public class SetsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SetDto>>> GetSets(int workoutId)
+    public async Task<ActionResult<IEnumerable<SetDTO>>> GetSets(int workoutId)
     {
         if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
         {
@@ -31,11 +31,11 @@ public class SetsController : ControllerBase
         }
 
         var setsForWorkout = await _fitnessAppRepository.GetSetsForWorkoutAsync(workoutId);
-        return Ok(_mapper.Map<IEnumerable<SetDto>>(setsForWorkout));
+        return Ok(_mapper.Map<IEnumerable<SetDTO>>(setsForWorkout));
     }
 
     [HttpGet("{setId}", Name = "GetSet")]
-    public async Task<ActionResult<SetDto>> GetSet(int workoutId, int setId)
+    public async Task<ActionResult<SetDTO>> GetSet(int workoutId, int setId)
     {
         if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
         {
@@ -49,11 +49,11 @@ public class SetsController : ControllerBase
             return NotFound();
         }
 
-        return Ok(_mapper.Map<SetDto>(setForWorkout));
+        return Ok(_mapper.Map<SetDTO>(setForWorkout));
     }
 
     [HttpPost]
-    public async Task<ActionResult<SetDto>> CreateSet(int workoutId, SetForCreationDto set)
+    public async Task<ActionResult<SetDTO>> CreateSet(int workoutId, CreateSetDTO createSetDto)
     {
         if (!await _fitnessAppRepository.WorkoutExistsAsync(workoutId))
         {
@@ -61,18 +61,22 @@ public class SetsController : ControllerBase
             return NotFound();
         }
 
-        var finalSet = _mapper.Map<Set>(set);
-        await _fitnessAppRepository.AddSetForWorkoutAsync(workoutId, finalSet);
+        var set = new Set
+        {
+            Intensity = createSetDto.Intensity,
+            Name = createSetDto.Name,
+        };
+        await _fitnessAppRepository.AddSetForWorkoutAsync(workoutId, set);
         await _fitnessAppRepository.SaveChangesAsync();
 
-        var createdSetToReturn = _mapper.Map<SetDto>(finalSet);
+        var setDto = _mapper.Map<SetDTO>(set);
         return CreatedAtRoute("GetSet",
             new
             {
                 workoutId,
-                setId = createdSetToReturn.Id
+                setId = setDto.Id
             },
-            createdSetToReturn
+            setDto
         );
     }
 

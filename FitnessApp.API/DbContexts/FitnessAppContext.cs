@@ -21,29 +21,38 @@ public class FitnessAppContext : DbContext
             new Workout("Laufen 30/12", WorkoutType.Running, new DateTime(2023, 12, 30, 12, 0, 0), 33) { Id = 5 });
 
         modelBuilder.Entity<Set>().HasData(
-            new Set("Triceps pulldown", "Easy")
+            new Set
             {
+                Name = "Triceps pulldown",
+                Intensity = "Easy",
                 Id = 1,
                 WorkoutId = 1
             },
-            new Set("Shoulder press", "Hard")
+            new Set
             {
+                Name = "Shoulder press",
+                Intensity = "Hard",
                 Id = 2,
                 WorkoutId = 1
             },
-            new Set("Bicep curl", "Easy")
+            new Set
             {
+                Name = "Bicep curl",
+                Intensity = "Easy",
                 Id = 3,
                 WorkoutId = 2
             },
-            new Set("Chest fly", "Medium")
+            new Set
             {
+                Name = "Chest fly",
+                Intensity = "Medium",
                 Id = 4,
                 WorkoutId = 2
-
             },
-            new Set("Hamstring curl", "Easy")
+            new Set
             {
+                Name = "Hamstring curl",
+                Intensity = "Easy",
                 Id = 5,
                 WorkoutId = 3
             });
