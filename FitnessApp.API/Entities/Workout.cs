@@ -16,9 +16,17 @@ public class Workout
     [Required]
     public WorkoutType Type { get; set; }
 
-    public DateTime Date { get; set; }
+    public DateTime StartTime { get; set; }
 
-    public int Length { get; set; }
+    public DateTime EndTime { get; set; }
+
+    public int LengthInMinutes
+    {
+        get
+        {
+            return (int)(EndTime - StartTime).TotalMinutes;
+        }
+    }
 
     public ICollection<Set> Sets { get; set; } = new List<Set>();
 }

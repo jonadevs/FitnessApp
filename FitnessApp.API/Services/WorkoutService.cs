@@ -16,7 +16,7 @@ public class WorkoutService : IWorkoutService
 
     public async Task<IEnumerable<Workout>> GetWorkoutsAsync()
     {
-        return await _context.Workouts.OrderBy(workout => workout.Date).ToListAsync();
+        return await _context.Workouts.OrderBy(workout => workout.StartTime).ToListAsync();
     }
 
     public async Task<(IEnumerable<Workout>, PaginationMetadata)> GetWorkoutsAsync(string? name, string? searchQuery, int pageNumber, int pageSize)
@@ -35,7 +35,7 @@ public class WorkoutService : IWorkoutService
         var totalItemCount = await workouts.CountAsync();
         var paginationMetadata = new PaginationMetadata(totalItemCount, pageSize, pageNumber);
 
-        workouts = workouts.OrderBy(workout => workout.Date)
+        workouts = workouts.OrderBy(workout => workout.StartTime)
                         .Skip(pageSize * (pageNumber - 1))
                         .Take(pageSize);
 

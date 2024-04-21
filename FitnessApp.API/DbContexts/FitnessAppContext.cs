@@ -19,40 +19,40 @@ public class FitnessAppContext : DbContext
                 Id = 1,
                 Name = "Training 14/09",
                 Type = WorkoutType.WeightTraining,
-                Date = new DateTime(2023, 9, 14, 17, 0, 0, DateTimeKind.Utc),
-                Length = 90
+                StartTime = new DateTime(2023, 9, 14, 17, 0, 0, DateTimeKind.Utc),
+                EndTime = new DateTime(2023, 9, 14, 18, 30, 0, DateTimeKind.Utc)
             },
             new Workout
             {
                 Id = 2,
                 Name = "Training 17/09",
                 Type = WorkoutType.WeightTraining,
-                Date = new DateTime(2023, 9, 17, 18, 0, 0, DateTimeKind.Utc),
-                Length = 120
+                StartTime = new DateTime(2023, 9, 17, 18, 0, 0, DateTimeKind.Utc),
+                EndTime = new DateTime(2023, 9, 17, 19, 0, 0, DateTimeKind.Utc)
             },
             new Workout
             {
                 Id = 3,
                 Name = "Training 20/09",
                 Type = WorkoutType.WeightTraining,
-                Date = new DateTime(2023, 9, 20, 17, 0, 0, DateTimeKind.Utc),
-                Length = 120
+                StartTime = new DateTime(2023, 9, 20, 17, 0, 0, DateTimeKind.Utc),
+                EndTime = new DateTime(2023, 9, 20, 18, 0, 0, DateTimeKind.Utc)
             },
             new Workout
             {
                 Id = 4,
                 Name = "Laufen 28/12",
                 Type = WorkoutType.Running,
-                Date = new DateTime(2023, 12, 28, 14, 0, 0, DateTimeKind.Utc),
-                Length = 31
+                StartTime = new DateTime(2023, 12, 28, 14, 0, 0, DateTimeKind.Utc),
+                EndTime = new DateTime(2023, 12, 28, 14, 45, 0, DateTimeKind.Utc)
             },
             new Workout
             {
                 Id = 5,
                 Name = "Laufen 30/12",
                 Type = WorkoutType.Running,
-                Date = new DateTime(2023, 12, 30, 12, 0, 0, DateTimeKind.Utc),
-                Length = 33
+                StartTime = new DateTime(2023, 12, 30, 12, 0, 0, DateTimeKind.Utc),
+                EndTime = new DateTime(2023, 12, 30, 12, 33, 0, DateTimeKind.Utc)
             });
 
         modelBuilder.Entity<Set>().HasData(
