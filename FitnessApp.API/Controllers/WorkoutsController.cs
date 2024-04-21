@@ -15,7 +15,7 @@ public class WorkoutsController : ControllerBase
 {
     private readonly IFitnessAppRepository _fitnessAppRepository;
     private readonly IWorkoutService _workoutService;
-    const int maxPageSize = 20;
+    const int _maxPageSize = 20;
 
     public WorkoutsController(IFitnessAppRepository fitnessAppRepository, IWorkoutService workoutService)
     {
@@ -36,7 +36,7 @@ public class WorkoutsController : ControllerBase
     [TypeFilter(typeof(ResultFilter<IEnumerable<WorkoutWithoutSetsDTO>>))]
     public async Task<ActionResult<IEnumerable<WorkoutWithoutSetsDTO>>> GetWorkouts(string? name, string? searchQuery, int pageNumber = 1, int pageSize = 10)
     {
-        pageSize = pageSize > maxPageSize ? maxPageSize : pageSize;
+        pageSize = pageSize > _maxPageSize ? _maxPageSize : pageSize;
         var (workouts, paginationMetadata) = await _workoutService.GetWorkoutsAsync(name, searchQuery, pageNumber, pageSize);
 
         Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
@@ -88,8 +88,7 @@ public class WorkoutsController : ControllerBase
         {
             Name = createWorkoutDto.Name,
             Type = createWorkoutDto.Type,
-            Date = createWorkoutDto.Date,
-            Length = createWorkoutDto.Length
+            StartTime = createWorkoutDto.StartTime
         };
         _workoutService.CreateWorkout(workout);
         await _fitnessAppRepository.SaveChangesAsync();

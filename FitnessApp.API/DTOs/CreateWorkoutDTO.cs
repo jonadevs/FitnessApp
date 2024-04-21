@@ -11,8 +11,6 @@ public class CreateWorkoutDTO
 
     public WorkoutType Type { get; set; }
 
-    [Required(ErrorMessage = "You need to provide a date value.")]
-    public DateTime Date { get; set; }
-
-    public int Length { get; set; }
+    [Required(ErrorMessage = "You need to provide a start time value.")]
+    public DateTime StartTime { get; set; }
 }

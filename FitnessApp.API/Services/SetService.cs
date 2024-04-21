@@ -40,5 +40,4 @@ public class SetService : ISetService
     {
         _context.Sets.Remove(set);
     }
-
 }
