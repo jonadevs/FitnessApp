@@ -1,6 +1,6 @@
 ﻿namespace FitnessApp.API.Models;
 
-public class WorkoutDto
+public class WorkoutDTO
 {
     public int Id { get; set; }
 
