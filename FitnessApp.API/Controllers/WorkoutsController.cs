@@ -33,8 +33,8 @@ public class WorkoutsController : ControllerBase
     /// <returns>Returns a list of workouts</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [TypeFilter(typeof(ResultFilter<IEnumerable<WorkoutWithoutSetsDto>>))]
-    public async Task<ActionResult<IEnumerable<WorkoutWithoutSetsDto>>> GetWorkouts(string? name, string? searchQuery, int pageNumber = 1, int pageSize = 10)
+    [TypeFilter(typeof(ResultFilter<IEnumerable<WorkoutWithoutSetsDTO>>))]
+    public async Task<ActionResult<IEnumerable<WorkoutWithoutSetsDTO>>> GetWorkouts(string? name, string? searchQuery, int pageNumber = 1, int pageSize = 10)
     {
         pageSize = pageSize > maxPageSize ? maxPageSize : pageSize;
         var (workouts, paginationMetadata) = await _workoutService.GetWorkoutsAsync(name, searchQuery, pageNumber, pageSize);
@@ -50,11 +50,11 @@ public class WorkoutsController : ControllerBase
     /// <returns>An IActionResult</returns>
     /// <response code ="200">Returns the requested workout</response>
     [HttpGet("{id}", Name = "GetWorkout")]
-    [ProducesResponseType(typeof(WorkoutDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(WorkoutDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [TypeFilter(typeof(ResultFilter<WorkoutDto>))]
+    [TypeFilter(typeof(ResultFilter<WorkoutDTO>))]
     public async Task<IActionResult> GetWorkout(int id)
     {
         var workout = await _workoutService.GetWorkoutByIdWithSetsAsync(id);
@@ -76,8 +76,8 @@ public class WorkoutsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    [TypeFilter(typeof(ResultFilter<WorkoutWithoutSetsDto>))]
-    public async Task<ActionResult<WorkoutWithoutSetsDto>> CreateWorkout(CreateWorkoutDTO createWorkoutDto)
+    [TypeFilter(typeof(ResultFilter<WorkoutWithoutSetsDTO>))]
+    public async Task<ActionResult<WorkoutWithoutSetsDTO>> CreateWorkout(CreateWorkoutDTO createWorkoutDto)
     {
         if (await _workoutService.WorkoutNameExistsAsync(createWorkoutDto.Name))
         {
