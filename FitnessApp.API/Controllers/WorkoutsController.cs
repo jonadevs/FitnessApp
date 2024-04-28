@@ -58,7 +58,7 @@ public class WorkoutsController : ControllerBase
     public async Task<IActionResult> GetWorkout(int id)
     {
         var workout = await _workoutService.GetWorkoutByIdWithSetsAsync(id);
-        if (workout == null)
+        if (workout is null)
         {
             return NotFound();
         }
@@ -91,7 +91,7 @@ public class WorkoutsController : ControllerBase
             StartTime = createWorkoutDto.StartTime
         };
         _workoutService.CreateWorkout(workout);
-        await _fitnessAppRepository.SaveChangesAsync();
+        _ = await _fitnessAppRepository.SaveChangesAsync();
 
         return CreatedAtRoute("GetWorkout",
             new
