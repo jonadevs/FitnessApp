@@ -34,8 +34,10 @@ public class SetsController : ControllerBase
             return NotFound();
         }
 
-        var setsForWorkout = await _setService.GetSetsForWorkoutAsync(workoutId);
-        return Ok(_mapper.Map<IEnumerable<SetDTO>>(setsForWorkout));
+        var sets = await _setService.GetSetsForWorkoutAsync(workoutId);
+
+        var setDtos = _mapper.Map<IEnumerable<SetDTO>>(sets);
+        return Ok(setDtos);
     }
 
     [HttpGet("{setId}", Name = "GetSet")]
@@ -47,13 +49,14 @@ public class SetsController : ControllerBase
             return NotFound();
         }
 
-        var setForWorkout = await _setService.GetSetForWorkoutAsync(workoutId, setId);
-        if (setForWorkout == null)
+        var sets = await _setService.GetSetForWorkoutAsync(workoutId, setId);
+        if (sets is null)
         {
             return NotFound();
         }
 
-        return Ok(_mapper.Map<SetDTO>(setForWorkout));
+        var setDto = _mapper.Map<SetDTO>(sets);
+        return Ok(setDto);
     }
 
     [HttpPost]
@@ -94,7 +97,7 @@ public class SetsController : ControllerBase
         }
 
         var set = await _setService.GetSetForWorkoutAsync(workoutId, setId);
-        if (set == null)
+        if (set is null)
         {
             _logger.LogInformation("Set with id {SetId} wasn't found.", setId);
             return NotFound();
@@ -117,7 +120,7 @@ public class SetsController : ControllerBase
         }
 
         var set = await _setService.GetSetForWorkoutAsync(workoutId, setId);
-        if (set == null)
+        if (set is null)
         {
             _logger.LogInformation("Set with id {SetId} wasn't found.", setId);
             return NotFound();

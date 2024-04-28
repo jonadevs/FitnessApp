@@ -44,16 +44,12 @@ public class WorkoutService : IWorkoutService
 
     public async Task<Workout?> GetWorkoutByIdAsync(int workoutId)
     {
-        var workouts = await _context.Workouts.Where(workout => workout.Id == workoutId).FirstOrDefaultAsync();
-
-        return workouts;
+        return await _context.Workouts.Where(workout => workout.Id == workoutId).FirstOrDefaultAsync();
     }
 
     public async Task<Workout?> GetWorkoutByIdWithSetsAsync(int workoutId)
     {
-        var workouts = await _context.Workouts.Include(workout => workout.Sets).Where(workout => workout.Id == workoutId).FirstOrDefaultAsync();
-
-        return workouts;
+        return await _context.Workouts.Include(workout => workout.Sets).Where(workout => workout.Id == workoutId).FirstOrDefaultAsync();
     }
 
     public async Task<bool> WorkoutExistsAsync(int workoutId)
