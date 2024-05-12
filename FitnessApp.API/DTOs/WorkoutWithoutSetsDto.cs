@@ -8,7 +8,7 @@ public class WorkoutWithoutSetsDTO
 
     public string Type { get; set; } = string.Empty;
 
-    public DateTime? Date { get; set; }
+    public DateTime? StartTime { get; set; }
 
-    public int Length { get; set; }
+    public int LengthInMinutes { get; set; }
 }
