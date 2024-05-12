@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using FitnessApp.API.DTOs;
 using FitnessApp.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -19,7 +20,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("authenticate")]
-    public ActionResult<string> Authenticate(AuthenticationRequestBody authenticationRequestBody)
+    public async Task<IActionResult> Authenticate(AuthenticationRequestBody authenticationRequestBody)
     {
         var user = ValidateUserCredentials(authenticationRequestBody.UserName, authenticationRequestBody.Password);
         if (user == null)
@@ -47,7 +48,8 @@ public class AuthenticationController : ControllerBase
             signingCredentials);
 
         var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-        return Ok(tokenToReturn);
+
+        return Ok(new AuthenticationResultDTO { Token = tokenToReturn });
     }
 
     private static FitnessAppUser? ValidateUserCredentials(string? userName, string? password)
