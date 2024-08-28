@@ -4,31 +4,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessApp.API.Services;
 
-public class SetService : ISetService
+public class SetService(FitnessAppContext context, IWorkoutService workoutService) : ISetService
 {
-    private readonly FitnessAppContext _context;
-    private readonly IWorkoutService _workoutService;
-
-    public SetService(FitnessAppContext context, IWorkoutService workoutService)
-    {
-        _context = context;
-        _workoutService = workoutService;
-    }
+    private readonly FitnessAppContext _context = context;
+    private readonly IWorkoutService _workoutService = workoutService;
 
     public async Task<IEnumerable<Set>> GetSetsForWorkoutAsync(int workoutId)
     {
-        return await _context.Sets.Where(set => set.WorkoutId == workoutId).ToListAsync();
+        return await _context.Sets.Where(x => x.WorkoutId == workoutId).ToListAsync();
     }
 
     public async Task<Set?> GetSetForWorkoutAsync(int workoutId, int setId)
     {
-        return await _context.Sets.Where(set => set.WorkoutId == workoutId && set.Id == setId).FirstOrDefaultAsync();
+        return await _context.Sets.Where(x => x.WorkoutId == workoutId && x.Id == setId).FirstOrDefaultAsync();
     }
 
     public async Task AddSetForWorkoutAsync(int workoutId, Set set)
     {
         var workout = await _workoutService.GetWorkoutByIdWithSetsAsync(workoutId);
-        if (workout == null)
+        if (workout is null)
         {
             return;
         }

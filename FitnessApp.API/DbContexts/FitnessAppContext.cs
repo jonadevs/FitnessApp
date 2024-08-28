@@ -3,13 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessApp.API.DbContexts;
 
-public class FitnessAppContext : DbContext
+public class FitnessAppContext(DbContextOptions<FitnessAppContext> options) : DbContext(options)
 {
     public DbSet<Workout> Workouts { get; set; }
 
     public DbSet<Set> Sets { get; set; }
-
-    public FitnessAppContext(DbContextOptions<FitnessAppContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
