@@ -8,22 +8,18 @@ namespace FitnessApp.API.Controllers;
 
 [ApiController]
 [Route("api/workouts/{workoutId}/sets")]
-public class SetsController : ControllerBase
+public class SetsController(
+    ILogger<SetsController> logger,
+    IFitnessAppRepository fitnessAppRepository,
+    IMapper mapper, IWorkoutService workoutService,
+    ISetService setService)
+    : ControllerBase
 {
-    private readonly ILogger<SetsController> _logger;
-    private readonly IFitnessAppRepository _fitnessAppRepository;
-    private readonly IMapper _mapper;
-    private readonly IWorkoutService _workoutService;
-    private readonly ISetService _setService;
-
-    public SetsController(ILogger<SetsController> logger, IFitnessAppRepository fitnessAppRepository, IMapper mapper, IWorkoutService workoutService, ISetService setService)
-    {
-        _logger = logger;
-        _fitnessAppRepository = fitnessAppRepository;
-        _mapper = mapper;
-        _workoutService = workoutService;
-        _setService = setService;
-    }
+    private readonly ILogger<SetsController> _logger = logger;
+    private readonly IFitnessAppRepository _fitnessAppRepository = fitnessAppRepository;
+    private readonly IMapper _mapper = mapper;
+    private readonly IWorkoutService _workoutService = workoutService;
+    private readonly ISetService _setService = setService;
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SetDTO>>> GetSets(int workoutId)

@@ -11,17 +11,11 @@ namespace FitnessApp.API.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/workouts")]
-public class WorkoutsController : ControllerBase
+public class WorkoutsController(IFitnessAppRepository fitnessAppRepository, IWorkoutService workoutService) : ControllerBase
 {
-    private readonly IFitnessAppRepository _fitnessAppRepository;
-    private readonly IWorkoutService _workoutService;
+    private readonly IFitnessAppRepository _fitnessAppRepository = fitnessAppRepository;
+    private readonly IWorkoutService _workoutService = workoutService;
     const int _maxPageSize = 20;
-
-    public WorkoutsController(IFitnessAppRepository fitnessAppRepository, IWorkoutService workoutService)
-    {
-        _fitnessAppRepository = fitnessAppRepository;
-        _workoutService = workoutService;
-    }
 
     /// <summary>
     /// Get a list of workouts

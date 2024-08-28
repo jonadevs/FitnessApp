@@ -10,20 +10,15 @@ namespace FitnessApp.API.Controllers;
 
 [Route("api/authentication")]
 [ApiController]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController(IConfiguration configuration) : ControllerBase
 {
-    private readonly IConfiguration _configuration;
-
-    public AuthenticationController(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    private readonly IConfiguration _configuration = configuration;
 
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate(AuthenticationRequestBody authenticationRequestBody)
     {
         var user = ValidateUserCredentials(authenticationRequestBody.UserName, authenticationRequestBody.Password);
-        if (user == null)
+        if (user is null)
         {
             return Unauthorized();
         }
